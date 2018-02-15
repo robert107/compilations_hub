@@ -3,27 +3,40 @@ var User = require('../models/user.model');
 _this = this;
 
 exports.getUsers = async function (query, page, limit) {
+    var options = {
+        page,
+        limit
+    }
     try {
-        // var users = await user.dosomething();
-        var users = await User.paginate();
+        var users = await User.paginate(query, options);
 
         return users;
-    } catch (error) {
+    } catch (e) {
         throw Error("Error while Paginating users.");
     }
 }
 
 exports.getUser = async function (id) {
-    //implement
+    try {
+        var selectedUser = await User.findOne({ _id: id });
+
+        if (selectedUser) {
+            return selectedUser;
+        }
+    } catch (e) {
+        throw Error("Error occurred while retrieving the user.");
+    }
 }
 
 exports.createUser = async function (user) {
     var newUser = new User({
-        username: User.username,
-        password: User.password,
-        firstName: User.name.firstName,
-        lastName: User.name.lastName,
-        email: User.email
+        username: user.username,
+        password: user.password,
+        name: {
+            firstName: user.name.firstName,
+            lastName: user.name.lastName
+        },
+        email: user.email
     });
 
     try {
@@ -35,7 +48,7 @@ exports.createUser = async function (user) {
 }
 
 exports.updateUser = async function (user) {
-    var id = User.id;
+    var id = user.id;
 
     try {
         var oldUser = await User.findById(id);
@@ -49,7 +62,6 @@ exports.updateUser = async function (user) {
 
     console.log(oldUser);
 
-    // If they exist, edit the user
     oldUser.username = user.username;
     oldUser.password = user.password;
     oldUser.name.firstName = user.name.firstName;

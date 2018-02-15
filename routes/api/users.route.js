@@ -5,6 +5,7 @@ var UserController = require('../../controllers/user.controller');
 
 // Map the API endpoints to the controller functions
 router.get('/', UserController.getUsers);
+router.get('/:id', UserController.getUser);
 router.post('/', UserController.createUser);
 router.put('/', UserController.updateUser);
 router.delete('/:id', UserController.deleteUser);

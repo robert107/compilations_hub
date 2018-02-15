@@ -3,19 +3,28 @@ var CompilationService = require('../services/compilation.service');
 _this = this;
 
 exports.getCompilations = async function (req, res, next) {
-    //possible params
+    var page = req.query.page ? req.query.page : 1
+    var limit = req.query.limit ? req.query.limit : 10;
 
     try {
-        var compilation = await CompilationService.getCompilation({});
+        var compilations = await CompilationService.getCompilations({}, page, limit);
 
-        return res.status(200).json({ status: 200, data: compilation, message: "Succesfully retrieved compilation." });
+        return res.status(200).json({ status: 200, data: compilations, message: "Succesfully retrieved compilations." });
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 }
 
 exports.getCompilation = async function (req, res, next) {
-    //return Compilation
+    var id = req.params.id;
+
+    try {
+        var selectedCompilation = await CompilationService.getCompilation(id);
+
+        return res.status(200).json({ status: 200, data: selectedUser, message: "Succesfully retrieved compilation." });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
 }
 
 exports.createCompilation = async function (req, res, next) {
@@ -66,7 +75,7 @@ exports.deleteCompilation = async function (req, res, next) {
     var id = req.params.id;
 
     try {
-        var deleted = await CompilationService.deleteCompilation(id);
+        var deletedCompilation = await CompilationService.deleteCompilation(id);
 
         return res.status(204).json({ status: 204, message: "Succesfully deleted compilation." });
     } catch (e) {

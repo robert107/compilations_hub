@@ -4,11 +4,13 @@ var Compilation = require('./compilation.model').schema;
 var Schema = mongoose.Schema;
 
 var CompilationItemSchema = new Schema({
-    _id: mongoose.Schema.Types.ObjectId,
     name: String,
     type: String,
     description: String,
-    compilations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Compilation' }]
+    compilations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Compilation', required: true }]
 });
 
-module.exports = mongoose.model('CompilationItem', CompilationItemSchema);
+// CompilationItemSchema.plugin(mongoosePaginate);
+const CompilationItem = mongoose.model('CompilationItem', CompilationItemSchema);
+
+module.exports = CompilationItem;

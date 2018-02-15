@@ -3,8 +3,11 @@ var Compilation = require('../models/compilation.model');
 _this = this;
 
 exports.getCompilations = async function (query, page, limit) {
+    var options = {
+        page,
+        limit
+    }
     try {
-        // var compilations = await compilation.dosomething();
         var compilations = await Compilation.paginate();
 
         return compilations;
@@ -14,15 +17,23 @@ exports.getCompilations = async function (query, page, limit) {
 }
 
 exports.getCompilation = async function (id) {
-    //implement
+    try {
+        var selectedCompilation = await Compilation.findOne({ _id: id });
+
+        if (selectedCompilation) {
+            return selectedCompilation;
+        }
+    } catch (e) {
+        throw Error("Error occurred while retrieving the user.");
+    }
 }
 
 exports.createCompilation = async function (compilation) {
     var newCompilation = new Compilation({
-        name: Compilation.name,
-        type: Compilation.type,
-        user: Compilation.user,//HERE PROBABLY WRONG
-        items: Compilation.items//---- || -----
+        name: compilation.name,
+        type: compilation.type,
+        user: compilation.user,//HERE PROBABLY WRONG
+        items: compilation.items//---- || -----
     });
 
     try {
@@ -49,7 +60,6 @@ exports.updateCompilation = async function (compilation) {
 
     console.log(oldCompilation);
 
-    // If they exist, edit the compilation
     oldCompilation.name = compilation.name;
     oldCompilation.type = compilation.type;
     oldCompilation.user = compilation.user;
@@ -65,7 +75,6 @@ exports.updateCompilation = async function (compilation) {
         throw Error("An Error occured while updating the compilation.");
     }
 }
-
 
 exports.deleteCompilation = async function (id) {
     try {

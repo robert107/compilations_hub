@@ -6,8 +6,6 @@ exports.getUsers = async function (req, res, next) {
     var page = req.query.page ? req.query.page : 1
     var limit = req.query.limit ? req.query.limit : 10;
 
-    console.log(page, limit);
-
     try {
         var users = await UserService.getUsers({}, page, limit);
 
@@ -65,7 +63,7 @@ exports.updateUser = async function (req, res, next) {
         password: req.body.password ? req.body.password : null,
         name: {
             firstName: req.body.firstName ? req.body.firstName : null,
-            lastName: req.body.firstName ? req.body.firstName : null
+            lastName: req.body.lastName ? req.body.lastName : null
         },
         email: req.body.email ? req.body.email : null
     }

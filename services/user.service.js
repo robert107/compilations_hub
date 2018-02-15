@@ -41,6 +41,7 @@ exports.createUser = async function (user) {
 
     try {
         var savedUser = await newUser.save();
+
         return savedUser;
     } catch (e) {
         throw Error("Error while creating user.");
@@ -78,7 +79,6 @@ exports.updateUser = async function (user) {
         throw Error("An Error occured while updating the user.");
     }
 }
-
 
 exports.deleteUser = async function (id) {
     try {
